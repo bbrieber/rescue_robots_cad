@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<robot name="iai_sherpa_box" xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:include filename="$(find iai_sherpa_box)/urdf/box.xacro" />
+    <sherpa_box_macro/>
+    <gazebo>
+        <plugin name="sherpa_box_ros_control" filename="libgazebo_ros_control.so">
+            <controlPeriod>0.001</controlPeriod>
+	    <robotParam>box/robot_description</robotParam>
+	    <!--
+	    <robotNamespace>/box</robotNamespace>
+	    -->
+        </plugin>
+    
+    </gazebo>
+    <gazebo>
+      <plugin name="box_docker" filename="libiai_box_docking.so">
+      </plugin>
+    </gazebo>
+    <!--
+    <gazebo>
+      <plugin name="moveit" filename="libgazebo_ros_moveit_planning_scene.so">
+            <updatePeriod>5</updatePeriod>
+	    <robotNamespace>/box</robotNamespace>
+	
+      </plugin>
+    </gazebo>
+    -->
+</robot>

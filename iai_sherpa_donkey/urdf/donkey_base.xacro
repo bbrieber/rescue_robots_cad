@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  
+
+  <xacro:macro name="donkey_base_macro">
+    <link name="base_link">
+        <!--MAIN_BODY-->
+        <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <mesh filename="package://iai_sherpa_donkey/meshes/Body_Full.dae"/>
+        </geometry>
+        </visual>
+        <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <mesh filename="package://iai_sherpa_donkey/meshes/body_full_col.stl"/>
+        </geometry>
+        </collision>
+        <!--LEFT_CHAINS-->
+	
+        <visual>
+        <origin xyz="0.16442573070526123 0.3477001190185547 -0.2631499767303467" rpy="0 0 0" />
+        <geometry>
+            <mesh filename="package://iai_sherpa_donkey/meshes/Main_Wheel.dae"/>
+        </geometry>
+        </visual>
+        
+	<visual>
+        <origin xyz="0.16442573070526123 -0.3477001190185547 -0.2631499767303467" rpy="0 0 0" />
+        <geometry>
+            <mesh filename="package://iai_sherpa_donkey/meshes/Main_Wheel.dae"/>
+        </geometry>
+        </visual><!--
+	
+	
+        <visual>
+        <origin xyz="0.16442573070526123 0.3477001190185547 -0.2631499767303467" rpy="0 0 0" />
+        <geometry>
+            <mesh filename="package://iai_sherpa_donkey/meshes/Main_Wheel.dae"/>
+        </geometry>
+        </visual>
+        
+	<visual>
+        <origin xyz="0.16442573070526123 -0.3477001190185547 -0.2631499767303467" rpy="0 0 0" />
+        <geometry>
+            <mesh filename="package://iai_sherpa_donkey/meshes/Main_Wheel.dae"/>
+        </geometry>
+        </visual>
+        <collision>
+        <origin xyz="0.16442573070526123 0.3477001190185547 -0.2631499767303467" rpy="0 0 0" />
+        <geometry>
+            <mesh filename="package://iai_sherpa_donkey/meshes/Main_Wheel.dae"/>
+        </geometry>
+        </collision>
+        <collision>
+        <origin xyz="0.16442573070526123 -0.3477001190185547 -0.2631499767303467" rpy="0 0 0" />
+        <geometry>
+            <mesh filename="package://iai_sherpa_donkey/meshes/Main_Wheel.dae"/>
+        </geometry>
+        </collision>
+	-->
+<!--
+        <collision>
+        <geometry>
+            <mesh filename="package://iai_sherpa_donkey/meshes/Full_Body_Col.dae"/>
+        </geometry>
+            <origin xyz="0.004205834120512009 -8.124277428578353e-08 0.4054466485977173" rpy="0 0 0" />
+        </collision>
+	-->
+        <inertial>
+<!--       
+        <origin xyz="0.0 0 0.15" rpy="0 0 0"/>
+	  
+	  <origin xyz="0.5 0 -0.25" rpy="0 0 0"/>
+	-->
+        <origin xyz="0.0 0 -0.35" rpy="0 0 0"/>
+	<mass value="100"/>
+        <inertia 
+            ixx="0.75" ixy="0.0" ixz="0.0" 
+            iyy="0.75" iyz="0.0" 
+            izz="0.75"/>
+        </inertial>
+    </link>
+    
+    
+      <link name="base_footprint">
+    <!-- visual -->
+    
+    
+    <!-- collision -->
+    
+
+    <!-- inertial -->
+    
+        <inertial>
+        <origin xyz="0 0 0.03" rpy="0 0 0" /><!-- FIXME starting higher to avoid collision-->
+        <mass value="0.1"/>
+	<!--
+	-->
+        <inertia 
+            ixx="0.01" ixy="0.0" ixz="0.0" 
+            iyy="0.01" iyz="0.0" 
+            izz="0.01"/>
+        </inertial>
+    </link>
+    <joint name="base_footprint_base_link_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+        <origin xyz="0 0 0.4054466485977173" rpy="0 0 0" />
+    
+  </joint>
+  
+  
+    <link name="box_dock_link">
+    </link>
+    <joint name="box_dock_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="box_dock_link"/>
+      <origin xyz="0.08 0.0 0.135" rpy="0.0 0.0 ${pi}" />
+    </joint> 
+    <!--
+    <joint name="base_footprint_base_link_joint" type="revolute">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+        <origin xyz="0 0 0.4054466485977173" rpy="0 0 0" />
+    
+    <axis xyz="1 0 0"/>
+    <limit effort="0" velocity="0" lower="0" upper="0" />
+
+  </joint>
+  
+   <transmission name="base_footprint_base_link_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="base_footprint_base_link_joint"/>
+      <actuator name="base_footprint_base_link_motor">
+          <hardwareInterface>EffortJointInterface</hardwareInterface>
+         <mechanicalReduction>1</mechanicalReduction>
+       </actuator>
+  </transmission>
+    -->
+  
+  
+    <!--xacro:rover_all_chains_macro/-->
+  </xacro:macro>
+</robot>

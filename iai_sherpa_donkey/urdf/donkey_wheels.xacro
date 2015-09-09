@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:property name="pi" value="3.1415939331054688" />
+  <xacro:property name="front_x" value="0.6964254379272461" />
+  <xacro:property name="center_x" value="0.17380213737487793"/>
+  <xacro:property name="front_c_x" value="0.3480099042256673" />
+  <xacro:property name="back_c_x" value="-0.00040562947591149534" />
+  <xacro:property name="back_x" value="-0.34882116317749023" />
+  <xacro:property name="def_y" value="0.5033063888549805"/>
+  <xacro:property name="def_z" value="-0.2631499767303467"/>
+  <!--
+  <xacro:property name="def_z" value="0.1422966718673706"/>
+  -->
+  <xacro:macro name="collision_wheel_macro" params="suffix *origin dir">
+    <link name="wheel_${suffix}">
+          
+	  <collision>
+            <origin xyz="0 0 0" rpy="${0.5 * pi} 0 0"/>
+            <geometry>
+            <cylinder radius="0.17" length="0.125"/>
+	    <!--
+            <cylinder radius="0.17" length="0.125"/>
+            -->
+	  </geometry>
+        </collision>
+	<!--
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+	    <mass value="25"/>
+	<inertia 
+                ixx=".3" ixy="0.0" ixz="0.0" 
+                iyy=".3" iyz="0.0" 
+                izz=".3"/>
+        </inertial>
+	-->
+	  <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+	    <mass value="25"/><!-- 1 -->
+            <inertia 
+                ixx=".2" ixy="0.0" ixz="0.0" 
+                iyy=".2" iyz="0.0" 
+                izz=".2"/>
+        </inertial>
+
+    </link>
+    <gazebo reference="wheel_${suffix}">
+          <mu1>10</mu1>
+	  <mu2>10</mu2>
+	  <kp>1000000</kp>
+	  <kd>1000000</kd>
+	  <fdir1>0 0 1</fdir1>
+	  <!--
+	  <kp>10000</kp>
+	  <kd>10000</kd>
+	  -->
+    </gazebo>
+    <joint name="wheel_joint_${suffix}" type="continuous">
+        <parent link="base_link"/>
+        <child link="wheel_${suffix}"/>
+        <xacro:insert_block name="origin" />
+        <limit effort="400" velocity="100" upper="2" lower="-2"  />
+        
+        <axis xyz="0 ${dir} 0"/>
+    </joint>    
+    <transmission name="wheel_trans_${suffix}">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="wheel_joint_${suffix}">
+	  <hardwareInterface>EffortJointInterface</hardwareInterface>
+	</joint>
+        <actuator name="wheel_motor_${suffix}">
+	  <hardwareInterface>EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+  </xacro:macro>
+  <xacro:macro name="donkey_wheels_macro">
+    <xacro:collision_wheel_macro suffix="front_left" dir="1">
+        <origin xyz="${front_x} ${def_y} ${def_z}" rpy="0 0 0" />
+    </xacro:collision_wheel_macro>
+    <xacro:collision_wheel_macro suffix="front_right" dir="1">
+        <origin xyz="${front_x} ${-1 * def_y} ${def_z}" rpy="0 0 0" />
+    </xacro:collision_wheel_macro>
+    
+    <xacro:collision_wheel_macro suffix="center_left" dir="1">
+        <origin xyz="${center_x} ${def_y} ${def_z}" rpy="0 0 0" />
+    </xacro:collision_wheel_macro>
+    <xacro:collision_wheel_macro suffix="center_right" dir="1">
+        <origin xyz="${center_x} ${-1 * def_y} ${def_z}" rpy="0 0 0" />
+    </xacro:collision_wheel_macro>
+    
+    
+    <xacro:collision_wheel_macro suffix="back_left" dir="1">
+        <origin xyz="${back_x} ${def_y} ${def_z}" rpy="0 0 0" />
+    </xacro:collision_wheel_macro>
+    <xacro:collision_wheel_macro suffix="back_right" dir="1">
+        <origin xyz="${back_x} ${-1 * def_y} ${def_z}" rpy="0 0 0" />
+    </xacro:collision_wheel_macro>
+    
+    
+    <!--
+    <xacro:collision_wheel_macro suffix="front_center_left" dir="1">
+        <origin xyz="${front_c_x} ${def_y} ${def_z}" rpy="0 0 0" />
+    </xacro:collision_wheel_macro>
+    <xacro:collision_wheel_macro suffix="front_center_right" dir="1">
+        <origin xyz="${front_c_x} ${-1 * def_y} ${def_z}" rpy="0 0 0" />
+    </xacro:collision_wheel_macro>
+    <xacro:collision_wheel_macro suffix="back_center_left" dir="1">
+        <origin xyz="${back_c_x} ${def_y} ${def_z}" rpy="0 0 0" />
+    </xacro:collision_wheel_macro>
+    <xacro:collision_wheel_macro suffix="back_center_right" dir="1">
+        <origin xyz="${back_c_x} ${-1 * def_y} ${def_z}" rpy="0 0 0" />
+    </xacro:collision_wheel_macro>
+    -->
+  </xacro:macro>
+</robot>
+  

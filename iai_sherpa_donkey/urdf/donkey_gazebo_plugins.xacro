@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+
+  <xacro:macro name="donkey_move_plugin_macro">
+    <gazebo>
+        <plugin name="donkey_controller" filename="libdiffdrive_plugin_multi_wheel.so">
+        <commandTopic>cmd_vel</commandTopic>
+	<!--
+        <rightJoints>wheel_joint_front_right wheel_joint_front_center_right wheel_joint_back_center_right wheel_joint_back_right</rightJoints>
+        <leftJoints>wheel_joint_front_left wheel_joint_front_center_left wheel_joint_back_center_left wheel_joint_back_left</leftJoints>
+	-->
+	
+        <rightJoints>wheel_joint_front_right wheel_joint_center_right wheel_joint_back_right</rightJoints>
+        <leftJoints>wheel_joint_front_left wheel_joint_center_left wheel_joint_back_left</leftJoints>
+        <odometryTopic>world</odometryTopic>
+        <odometryFrame>world</odometryFrame>
+        <odometryRate>20.0</odometryRate>
+	<publishOdometryTf>true</publishOdometryTf>
+        <publishOdometryMsg>false</publishOdometryMsg>
+        <robotBaseFrame>base_footprint</robotBaseFrame>
+        </plugin>
+    </gazebo>
+
+    <!--
+    <gazebo>
+        <plugin name="donkey_controller" filename="libiai_donkey_move_plugin.so">
+        <commandTopic>cmd_vel</commandTopic>
+        <odometryTopic>world</odometryTopic>
+        <odometryFrame>world</odometryFrame>
+        <odometryRate>20.0</odometryRate>
+        <robotBaseFrame>base_footprint</robotBaseFrame>
+        </plugin>
+    </gazebo>
+    -->
+  </xacro:macro>
+
+  
+  <xacro:macro name="donkey_planar_move_plugin_macro">
+    <gazebo>
+      <plugin name="object_controller" filename="libgazebo_ros_planar_move.so">
+	<commandTopic>cmd_vel</commandTopic>
+	<odometryTopic>world</odometryTopic>
+	<odometryFrame>world</odometryFrame>
+	<odometryRate>10.0</odometryRate>
+	<robotBaseFrame>base_footprint</robotBaseFrame>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+  
+  <xacro:macro name="donkey_object_detection">
+
+    <gazebo>
+        <plugin name="donkey_object_detection" filename="libsherpa_object_scanner_plugin.so">
+        <range>10</range>
+        </plugin>
+    </gazebo>
+  </xacro:macro>
+  <xacro:macro name="donkey_victim_detection">
+    <!--
+diffdrive_plugin_multi_wheel
+    -->
+    <gazebo>
+        <plugin name="donkey_victim_detection" filename="libsherpa_avalange_scanner_plugin.so">
+        <range>10</range>
+        </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="donkey_ros_controll_plugin_macro">
+    <gazebo>
+        <plugin name="donkey_ros_control" filename="libgazebo_ros_control.so">
+            <controlPeriod>0.001</controlPeriod>
+	    <robotParam>robot_description</robotParam>
+	    <!--
+            <robotNamespace>$(arg prefix)</robotNamespace>
+            <robotSimType>sherpa_donkey_control/SherpaDonkeyHWSim</robotSimType>
+	    
+	    -->
+        </plugin>
+    </gazebo>
+  
+  </xacro:macro>
+  <xacro:macro name="donkey_gazebo">
+    <gazebo>
+        <plugin name="donkey_ros_control" filename="libgazebo_ros_control.so">
+            <controlPeriod>0.001</controlPeriod>
+	    <robotParam>robot_description</robotParam>
+	    <!--
+	    THIS should be set by the ros gazebo API
+            <robotNamespace>$(arg prefix)</robotNamespace>
+	    -->
+            <robotSimType>sherpa_donkey_control/SherpaDonkeyHWSim</robotSimType>
+	    
+        </plugin>
+        <plugin name="donkey_victim_detection" filename="libsherpa_victim_scanner_plugin.so">
+        <range>10</range>
+        </plugin>
+    </gazebo>
+    <gazebo>
+        <plugin name="donkey_object_detection" filename="libsherpa_object_scanner_plugin.so">
+        <range>10</range>
+        </plugin>
+    </gazebo>
+  </xacro:macro>
+  <xacro:donkey_ros_controll_plugin_macro />
+  <xacro:donkey_planar_move_plugin_macro />
+  <!--
+  <xacro:donkey_move_plugin_macro />
+  <xacro:donkey_object_detection />
+  <xacro:donkey_victim_detection />
+  -->
+</robot>

@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+
+<robot name="iai_donkey" xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:property name="pi" value="3.1415939331054688" />
+   
+  <xacro:macro name="sherpa_box_macro">
+    <link name="base_footprint">
+        <!--MAIN_BODY-->
+    </link>
+
+
+    <link name="base_link">
+        <!--MAIN_BODY-->
+        <visual>
+	  <origin xyz="0 0 0" rpy="0 0 0" />
+	  <geometry>
+	      <mesh filename="package://iai_sherpa_box/meshes/Box_VIS.dae"/>
+	  </geometry>
+        </visual>
+	
+        <collision>
+	  <origin xyz="0 0 0" rpy="0 0 0" />
+	  <geometry>
+	    <!--
+	      <mesh filename="package://iai_sherpa_box/meshes/Box_COL.stl"/>
+	    -->
+	    <box size="0.951 0.495 0.489" />
+	  </geometry>
+        </collision>
+	<inertial>
+	  <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+	  <mass value="50"/>
+	  <inertia 
+	      ixx="1" ixy="0.0" ixz="0.0" 
+	      iyy="1" iyz="0.0" 
+	      izz="1"/>
+        </inertial>
+    </link>
+    
+    <joint name="base_joint" type="fixed">
+      <parent link="base_footprint"/>
+      <child link="base_link"/>
+    </joint>
+
+<!--    
+    <joint name="base_joint" type="revolute">
+      <parent link="base_footprint"/>
+      <child link="base_link"/>
+      <origin xyz="0.0 0.0 0.25" rpy="0. 0. 0." />
+      <axis xyz="1 0 0"/>
+      <limit effort="0" velocity="0" lower="0" upper="0" />
+    </joint> 
+    <transmission name="base_joint_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="base_joint"/>
+      <actuator name="base_joint_motor">
+          <hardwareInterface>PositionJointInterface</hardwareInterface>
+         <mechanicalReduction>1</mechanicalReduction>
+       </actuator>
+    </transmission>
+    -->
+
+    <link name="gripper_front_link">
+    </link>
+    
+    
+    <link name="gripper_top_link">
+    </link>
+    
+    
+    <link name="quadrotor_dock_left_front_link">
+    </link>
+    <link name="quadrotor_dock_left_back_link">
+    </link>
+    <link name="quadrotor_dock_right_front_link">
+    </link>
+    <link name="quadrotor_dock_right_back_link">
+    </link>
+    
+    
+    <link name="top_dock_link">
+    </link>
+    
+    <link name="bottom_dock_link">
+    </link>
+    
+    
+    <joint name="gripper_front_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="gripper_front_link"/>
+      <origin xyz="0.48 0.0 0.0" rpy="${0.5 *pi} ${0.25 *pi} ${-0.5 *pi}" />
+    </joint> 
+    
+    
+    
+    
+    <joint name="gripper_top_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="gripper_top_link"/>
+      <origin xyz="0.23 0.0 0.25" rpy="0.0 ${pi} ${0.25 *pi}" />
+    </joint> 
+    
+    
+    <joint name="top_dock_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="top_dock_link"/>
+      <origin xyz="0.0 0.0 0.25" rpy="0. ${pi} 0." />
+    </joint> 
+    
+    <joint name="bottom_dock_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="bottom_dock_link"/>
+      <origin xyz="0.0 0.0 -0.25" rpy="0. 0.0 0." />
+    </joint>
+    
+    <!--
+      <origin xyz="0.30 0.24 0.1" rpy="${-0.5 *pi} ${-0.25 *pi} 0." />
+    
+    -->
+    <joint name="quadrotor_dock_left_front_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="quadrotor_dock_left_front_link"/>
+      <origin xyz="0.26 0.24 0" rpy="${-0.5 *pi} ${-0.25 *pi} 0." />
+    </joint>
+    
+    <joint name="quadrotor_dock_right_front_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="quadrotor_dock_right_front_link"/>
+      <origin xyz="0.26 -0.24 0.0" rpy="${0.5 *pi} ${-0.25 *pi} 0." />
+    </joint>
+    
+    
+    <joint name="quadrotor_dock_left_back_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="quadrotor_dock_left_back_link"/>
+      <origin xyz="-0.24 0.24 0.0" rpy="${-0.5 *pi} ${-0.25 *pi} 0." />
+    </joint>
+    
+    <joint name="quadrotor_dock_right_back_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="quadrotor_dock_right_back_link"/>
+      <origin xyz="-0.24 -0.24 0.0" rpy="${0.5 *pi} ${-0.25 *pi} 0." />
+    </joint>
+  </xacro:macro>
+</robot>

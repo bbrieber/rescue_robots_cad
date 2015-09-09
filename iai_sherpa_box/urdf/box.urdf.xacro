@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<robot name="iai_sherpa_box" xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:include filename="$(find iai_sherpa_box)/urdf/box.xacro" />
+    
+    <sherpa_box_macro/>
+</robot>

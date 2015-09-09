@@ -1,0 +1,53 @@
+joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 200 
+
+arm_controller:
+    type: position_controllers/JointTrajectoryController
+    joints:
+        - base_link_arm_base_joint
+        - arm_base_arm_lower_joint
+        - arm_lower_arm_lower_end_joint
+        - arm_lower_end_arm_upper_joint
+        - arm_upper_arm_upper_end_joint
+        - arm_upper_end_gripper_base_joint
+
+gripper_controller:
+    type: position_controllers/JointTrajectoryController
+    joints:
+        - gripper_base_gripper_palm_joint
+        - gripper_palm_finger_bottom_left_joint
+        - gripper_palm_finger_bottom_right_joint
+        - gripper_palm_finger_top_left_joint
+        - gripper_palm_finger_top_right_joint
+
+chain_controller:
+    type: position_controllers/JointTrajectoryController
+    joints:
+        - left_main_chain_left_back_chain_loose_joint
+        - left_main_chain_left_front_chain_loose_joint
+        - right_main_chain_right_back_chain_loose_joint
+        - right_main_chain_right_front_chain_loose_joint
+
+back_right_wheel_controller:
+    type: effort_controllers/JointPositionController
+    joint: wheel_joint_back_right
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+back_left_wheel_controller:
+    type: effort_controllers/JointPositionController
+    joint: wheel_joint_back_left
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+front_right_wheel_controller:
+    type: effort_controllers/JointPositionController
+    joint: wheel_joint_front_right
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+front_left_wheel_controller:
+    type: effort_controllers/JointPositionController
+    joint: wheel_joint_front_left
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+    
+          
+#gripper_palm_finger_bottom_left_joint
+#gripper_palm_finger_bottom_right_joint
+#gripper_palm_finger_top_left_joint
+#gripper_palm_finger_top_right_joint

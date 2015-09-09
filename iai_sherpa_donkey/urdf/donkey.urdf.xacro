@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+
+<robot name="iai_donkey" xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find iai_sherpa_donkey)/urdf/donkey_base.xacro" />
+    <xacro:include filename="$(find iai_sherpa_donkey)/urdf/donkey_sensors.xacro" />
+    <!--
+    <xacro:include filename="$(find iai_sherpa_donkey)/urdf/donkey_wheels.xacro" />
+    <xacro:include filename="$(find iai_sherpa_donkey)/urdf/donkey_arm.xacro.bkup" />
+    -->
+    <xacro:include filename="$(find iai_sherpa_donkey)/urdf/donkey_arm.xacro" />
+    <xacro:include filename="$(find iai_sherpa_donkey)/urdf/donkey_lose_chains.xacro" />
+    <!--
+    
+    
+     
+    -->
+  <donkey_all_chains_macro/>
+  <xacro:donkey_base_macro/>
+  <xacro:donkey_base_cam_macro name="cam_left">
+    <origin xyz="1.465 0.1 0.2" rpy="3.141592654 0 0"/>
+  </xacro:donkey_base_cam_macro>
+  <xacro:donkey_base_cam_macro name="cam_right">
+    <origin xyz="1.465 -0.1 0.2" rpy="0 0 0"/>
+  </xacro:donkey_base_cam_macro>
+  <xacro:gripper_cam link_name="cam_left">
+    <origin xyz="-0.2 0 0" rpy="3.141592654 0 0"/>
+  </xacro:gripper_cam>
+  <xacro:gripper_cam link_name="cam_right">
+    <origin xyz="0.2 0 0" rpy="0 0 0"/>
+  </xacro:gripper_cam>
+    <!--
+  <donkey_wheels_macro/>
+  -->
+  
+  <!-- ARM -->
+  
+  <!--
+  <donkey_arm_macro/>
+  <xacro:gripper_cam link_name="cam_left">
+    <origin xyz="-0.2 0 0" rpy="3.141592654 0 0"/>
+  </xacro:gripper_cam>
+  <xacro:gripper_cam link_name="cam_right">
+    <origin xyz="0.2 0 0" rpy="0 0 0"/>
+  </xacro:gripper_cam>
+  -->
+  <!--front SENSOR -->
+  <!--
+  <xacro:donkey_hokuyo>
+    <origin xyz="0.43 0.0 0.0010" rpy="0 0.1 0" />
+  </xacro:donkey_hokuyo>
+  -->
+<!--
+-->
+    <!--
+    <xacro:include filename="$(find iai_sherpa_donkey)/urdf/donkey_box.xacro"/> 
+    -->
+    
+    
+</robot>

@@ -1,0 +1,215 @@
+<?xml version="1.0"?>
+
+<robot name="iai_rmax" xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:property name="pi" value="3.1415939331054688" />
+   
+  <xacro:macro name="iai_rmax_macro">
+    <!--
+    <link name="base_footprint">
+    </link>
+    -->
+
+    <link name="base_link">
+      <inertial>
+        <mass value="1.477" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
+      </inertial>
+        <!--MAIN_BODY-->
+        <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <mesh filename="package://iai_rescue_rmax/meshes/iai_rmax.dae"/>
+        </geometry>
+        </visual>
+        <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <mesh filename="package://iai_rescue_rmax/meshes/iai_rmax.dae"/>
+        </geometry>
+        </collision>
+    </link>
+
+    
+    
+    <link name="box_dock_link">
+    </link>
+    
+    
+    <link name="laser_link">
+      
+      <inertial>
+        <mass value="0.001" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001" />
+      </inertial>
+        <!--MAIN_BODY-->
+        <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <box size="0.05 0.05 0.1"/>
+        </geometry>
+        </visual>
+        <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <box size="0.05 0.05 0.1"/>
+        </geometry>
+        </collision>
+    </link>
+    
+    <link name="sensor_link">
+      
+      <inertial>
+        <mass value="0.001" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001" />
+      </inertial>
+        <!--MAIN_BODY-->
+        <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <box size="0.05 0.05 0.1"/>
+        </geometry>
+        </visual>
+        <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <box size="0.05 0.05 0.1"/>
+        </geometry>
+        </collision>
+    </link>
+    
+    <!--
+    <joint name="base_joint" type="fixed">
+      <parent link="base_footprint"/>
+      <child link="base_link"/>
+      <origin xyz="0.0 0.0 1.52604" rpy="0. 0. 0." />
+    </joint> 
+    -->
+    <joint name="box_dock_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="box_dock_link"/>
+      <origin xyz="0. 0.0 -0.275" rpy="0.0 ${pi} 0.0" />
+    </joint> 
+    <joint name="laser_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="laser_link"/>
+      <origin xyz="0.577 0.0 -0.101" rpy="0.0 ${0.5*pi} 0.0" />
+          <axis xyz="1 0 0"/>
+          <limit effort="0" velocity="0" lower="0" upper="0" />
+    </joint> 
+    
+    <joint name="sensor_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="sensor_link"/>
+      <origin xyz="0.577 0.0 -0.101" rpy="0.0 ${0.5*pi} 0.0" />
+	  <axis xyz="1 0 0"/>
+	  <limit effort="0" velocity="0" lower="0" upper="0" />
+    </joint> 
+  </xacro:macro>
+    <gazebo reference="sensor_link">
+    <sensor type="ray" name="head_hokuyo_sensor">
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>true</visualize>
+      <always_on>1</always_on>
+      <update_rate>40</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>1</samples>
+            <resolution>1</resolution>
+            <min_angle>-0.01</min_angle>
+            <max_angle>0.01</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.10</min>
+          <max>100.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        
+      </ray>
+      <plugin name="rmax_laser_controller" filename="libgazebo_ros_laser.so">
+        <topicName>/rmax/height_scan</topicName>
+        <frameName>sensor_link</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
+    <gazebo reference="laser_link">
+      <sensor type="ray" name="laser_sensor">
+        <pose>0 0 0 0 0 0</pose>
+        <visualize>true</visualize>
+        <always_on>1</always_on>
+        <update_rate>40</update_rate>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>720</samples>
+              <resolution>1</resolution>
+              <min_angle>-0.5</min_angle>
+              <max_angle>.5</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>1</min>
+            <max>100.0</max>
+            <resolution>0.01</resolution>
+          </range>
+          
+          <noise>
+            <type>gaussian</type>
+            <!-- Noise parameters based on published spec for Hokuyo laser
+                achieving "+-30mm" accuracy at range < 10m.  A mean of 0.0m and
+                stddev of 0.01m will put 99.7% of samples within 0.03m of the true
+                reading. -->
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+        <plugin name="rmax_laser_controller" filename="libgazebo_ros_laser.so">
+          <topicName>/rmax/laser_scan</topicName>
+          <frameName>laser_link</frameName>
+        </plugin>
+        <plugin name="rmax_map_scanner" filename="libiai_object_scanner.so">
+          <range>25.</range>
+          <update_rate>1.0</update_rate>
+          <topic>env_scan</topic>
+          <scanner_id>42</scanner_id>
+          <target_type>victim</target_type>
+          <roboNamespace>rmax</roboNamespace>
+          <!--
+          <roboNamespace>sensor_link</topic>
+          <update_rate>1</update_rate>
+          <topic>env_scan</topic>
+          <scanner_id>42</scanner_id>
+          <target_type>terrain</target_type>
+          -->
+          
+        
+      </plugin>
+    </sensor>
+  </gazebo>
+  <gazebo>
+    <plugin name="object_controller" filename="libgazebo_ros_floating_move.so">
+      <commandTopic>cmd_vel</commandTopic>
+      <odometryTopic>world</odometryTopic>
+      <odometryFrame>world</odometryFrame>
+      <odometryRate>40.0</odometryRate>
+      <robotBaseFrame>base_link</robotBaseFrame>
+    </plugin>
+  </gazebo>
+  <gazebo>
+    <plugin name="object_controller" filename="libgazebo_ros_floating_move.so">
+      <commandTopic>cmd_vel</commandTopic>
+      <odometryTopic>world</odometryTopic>
+      <odometryFrame>world</odometryFrame>
+      <odometryRate>40.0</odometryRate>
+      <robotBaseFrame>base_link</robotBaseFrame>
+    </plugin>
+  </gazebo>
+  <!--
+  <xacro:include filename="$(find hector_quadrotor_gazebo)/urdf/quadrotor_plugins.gazebo.xacro" />
+  -->
+</robot>

@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+
+<launch>
+  <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
+  <arg name="x" default="0"/>
+  <arg name="y" default="0"/>
+  <arg name="z" default="0"/>
+  <arg name="R" default="0"/>
+  <arg name="P" default="0"/>
+  <arg name="Y" default="0"/>
+  <arg name="name" default="Donkey"/>
+    
+  
+  <arg name="load_controller" default="true" />
+  <arg name="use_pad" default="true" />
+ <!-- 
+  <arg name="robot_namespace" default="$(optenv ROS_NAMESPACE)"/>
+  -->
+  <arg name="tf_prefix" default="donkey"/>
+  <arg name="robot_namespace" default="donkey"/>
+  <arg name="model" default="$(find iai_sherpa_donkey)/urdf/donkey.gazebo.urdf.xacro"/>
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(arg model)' prefix:=$(arg robot_namespace)" />
+   <rosparam if="$(arg load_controller)" file="$(find iai_sherpa_donkey)/config/donkey_control.yaml"  command="load" />
+     <param name="tf_prefix" type="string" value="$(arg tf_prefix)" />
+  
+  <include file="$(find hector_quadrotor_teleop)/launch/logitech_gamepad.launch" if="$(arg use_pad)"/>           
+  <!--
+  <rosparam if="$(arg load_controller)" file="$(find sherpa_rover_control)/config/cmd_controller.yaml"  command="load" />
+  <rosparam if="$(arg load_controller)" file="$(find sherpa_rover_control)/config/sherpa_rover_ros_control.yaml"  command="load" />    
+  --> 
+<node name="spawn_rover" pkg="gazebo_ros" type="spawn_model" args="
+    -param robot_description 
+    -urdf 
+    -x $(arg x) 
+    -y $(arg y) 
+    -z $(arg z) 
+    -R $(arg R) 
+    -P $(arg P) 
+    -Y $(arg Y) 
+    -model $(arg name) 
+    -robot_namespace $(arg robot_namespace)
+  "/>
+  
+  
+<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+        output="screen"   args="
+        joint_state_controller
+      
+      "
+      >
+  </node>
+<!--
+	arm_controller
+	gripper_controller
+	chain_controller
+      -->
+          <!--output="screen" ns="/$(arg robot_namespace)" args="-->
+  <!--
+  
+        back_right_wheel_controller 
+	back_left_wheel_controller 
+	front_right_wheel_controller 
+	front_left_wheel_controller
+	center_right_wheel_controller 
+	center_left_wheel_controller
+  
+  
+        back_center_right_wheel_controller 
+	back_center_left_wheel_controller 
+	front_center_right_wheel_controller 
+	front_center_left_wheel_controller
+  arm_controller
+	gripper_controller
+        back_right_wheel_controller 
+	back_left_wheel_controller 
+	front_right_wheel_controller 
+	front_left_wheel_controller
+	chain_controller
+  
+  
+  arm_controller
+	gripper_controller
+        back_right_wheel_controller 
+	back_left_wheel_controller 
+	front_right_wheel_controller 
+	front_left_wheel_controller
+	chain_controller
+  -->
+<!--
+<node if="$(arg load_controller)" name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+        output="screen" ns="/$(arg robot_namespace)" args="
+        joint_state_controller
+        back_right_wheel_controller 
+	back_left_wheel_controller 
+	front_right_wheel_controller 
+	front_left_wheel_controller
+            ">
+  </node>
+-->
+<!--       
+
+	arm_controller
+	gripper_controller
+        back_right_wheel_controller 
+	back_left_wheel_controller 
+	front_right_wheel_controller 
+	front_left_wheel_controller
+
+
+        arm_controller        
+
+arm_base_to_lower_controller arm_lower_to_upper_controller arm_upper_to_gripper_controller         
+
+front_left_chain_controller front_right_chain_controller back_left_chain_controller back_right_chain_controller
+
+arm_base_to_lower_controller arm_lower_to_upper_controller arm_upper_to_gripper_controller 
+
+
+        back_right_wheel_controller back_left_wheel_controller front_right_wheel_controller front_left_wheel_controller front_left_chain_controller front_right_chain_controller back_left_chain_controller back_right_chain_controller
+
+
+arm_base_to_lower_controller arm_lower_to_upper_controller arm_upper_to_gripper_controller 
+    -->
+   
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" >
+     <param name="publish_frequency" type="double" value="50.0" />
+     <param name="tf_prefix" type="string" value="$(arg robot_namespace)" />
+   </node>
+   
+   
+</launch>

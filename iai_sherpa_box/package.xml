@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package>
+  <name>iai_sherpa_box</name>
+  <version>0.8.0</version>
+  <description>The iai_sherpa_box package</description>
+
+  <maintainer email="bbrieber@cs.uni-bremen.de">Benjmian Brieber</maintainer>
+
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <run_depend>gazebo_ros</run_depend>
+
+
+  <export>
+
+    </export>
+</package>

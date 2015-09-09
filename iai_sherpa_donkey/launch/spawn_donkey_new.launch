@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+
+<launch>
+  <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
+  
+  <arg name="x" default="0"/>
+  <arg name="y" default="0"/>
+  <arg name="z" default="0"/>
+  <arg name="R" default="0"/>
+  <arg name="P" default="0"/>
+  <arg name="Y" default="0"/>
+  <arg name="robot_name" default="Donkey"/>
+  <arg name="use_pad" default="true"/>
+    
+  <!--
+  <arg name="robot_namespace" default="donkey"/>
+  <group>
+    -->
+      
+  <arg name="robot_namespace" default="donkey"/>
+    
+<!--
+<group ns="$(arg robot_namespace)">
+  -->    
+  <arg name="model" default="$(find sherpa_donkey_description)/urdf/donkey.urdf.xacro"/>
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(arg model)' prefix:=$(arg robot_namespace)"/>
+  
+
+  
+  <node name="spawn_rover" pkg="gazebo_ros" type="spawn_model" args="
+    -param robot_description 
+    -urdf 
+    -x $(arg x) 
+    -y $(arg y) 
+    -z $(arg z) 
+    -R $(arg R) 
+    -P $(arg P) 
+    -Y $(arg Y) 
+    -model $(arg robot_name) 
+    -robot_namespace $(arg robot_namespace)
+  "/>
+  
+    <!-- TODO adjust names -->
+    <rosparam file="$(find sherpa_donkey_description)/config/donkey_control.yaml"  command="load" />  
+    <node  name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+        output="screen" ns="/$(arg robot_namespace)" args="
+        joint_state_controller
+        back_right_wheel_controller 
+	back_left_wheel_controller 
+	front_right_wheel_controller 
+	front_left_wheel_controller
+	arm_controller
+	gripper_controller
+            ">
+	    
+	    <!-- 
+	chain_controller
+	    
+	      -->
+	             
+  
+   
+  <remap from="robot_description" to="$(arg robot_namespace)/robot_description" />
+  </node>
+  
+   <include file="$(find hector_quadrotor_teleop)/launch/logitech_gamepad.launch" if="$(arg use_pad)"/>  
+  
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" >
+     <param name="publish_frequency" type="double" value="50.0" />
+     <param name="tf_prefix" type="string" value="$(arg robot_namespace)" />
+     
+   </node>
+   <!--
+</group>
+-->
+</launch>

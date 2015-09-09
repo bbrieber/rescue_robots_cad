@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<robot name="donkey" xmlns:xacro="http://ros.org/wiki/xacro">
+
+
+  <link name="box_dock">
+    <!-- visual -->
+    <!--
+    <geometry>
+            <mesh filename="package://sherpa_donkey_description/meshes/Box.dae"/>
+        </geometry>
+	-->
+    <!-- collision -->
+    
+
+    <!-- inertial -->
+    
+        <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="1"/>
+        <inertia 
+            ixx="0.01" ixy="0.0" ixz="0.0" 
+            iyy="0.01" iyz="0.0" 
+            izz="0.01"/>
+        </inertial>
+    
+  </link>
+
+  <joint name="base_link_box_dock_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="box_dock"/>
+    
+      <origin xyz="  0.0611   0.0000   0.1367" rpy="  0.0000  -0.0000   0.0000" />
+    <axis xyz="1 0 0"/>
+    <limit effort="0" velocity="0" lower="0" upper="0" />
+
+  </joint> 
+ 
+   <transmission name="base_link_box_dock_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="base_link_box_dock_joint"/>
+      <actuator name="base_link_box_dock_motor">
+          <hardwareInterface>PositionJointInterface</hardwareInterface>
+         <mechanicalReduction>1</mechanicalReduction>
+       </actuator>
+  </transmission>
+
+</robot>

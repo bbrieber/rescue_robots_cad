@@ -1,0 +1,548 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <!-- Main donkey link -->
+  <xacro:macro name="donkey_arm_macro">
+
+  
+<link name="arm_base">
+    <!-- visual -->
+    
+    <visual>
+        
+        <geometry>
+            <mesh filename="package://iai_sherpa_donkey/meshes/arm_base_vis.dae"/>
+        </geometry>
+    </visual>
+
+    
+    <!-- collision -->
+    
+    <collision>
+        
+        <geometry>
+            <mesh filename="package://iai_sherpa_donkey/meshes/arm_base_col.stl"/>
+        </geometry>
+    </collision>
+
+
+    <!-- inertial -->
+    
+        <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.5"/>
+        <inertia 
+            ixx="0.001" ixy="0.0" ixz="0.0" 
+            iyy="0.001" iyz="0.0" 
+            izz="0.001"/>
+        </inertial>
+    
+</link>
+
+<joint name="base_link_arm_base_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="arm_base"/>
+      <origin xyz="-0.39818906784057617 0.0 0.0010514259338378906" rpy="0 0 ${pi}" />
+    
+
+    <axis xyz="1 0 0"/>
+    <!-- 
+        THIS is a dirty hack must be fixed in future versions
+        what we need is a new empty type which has properties for joint types limits...
+        lower and upper could be set by constraints    
+    -->
+    <limit effort="100" velocity="1.0" lower="-3.14" upper="3.14" />
+  </joint> 
+ 
+   <transmission name="base_link_arm_base_trans">
+      <type>position_controllers/JointTrajectoryController</type>
+      <joint name="base_link_arm_base_joint">
+          <hardwareInterface>PositionJointInterface</hardwareInterface></joint>
+      <actuator name="base_link_arm_base_motor">
+          <hardwareInterface>PositionJointInterface</hardwareInterface>
+         <mechanicalReduction>1</mechanicalReduction>
+       </actuator>
+  </transmission>
+
+<link name="arm_lower">
+    <!-- visual -->
+    
+    <visual>
+        
+        <geometry>
+            <mesh filename="package://iai_sherpa_donkey/meshes/arm_lower_vis.dae"/>
+        </geometry>
+    </visual>
+
+    
+    <!-- collision -->
+    
+    <collision>
+        
+        <geometry>
+            <mesh filename="package://iai_sherpa_donkey/meshes/arm_lower_col.stl"/>
+        </geometry>
+    </collision>
+
+
+    <!-- inertial -->
+    
+        <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="1"/>
+        <inertia 
+            ixx="0.001" ixy="0.0" ixz="0.0" 
+            iyy="0.001" iyz="0.0" 
+            izz="0.001"/>
+        </inertial>
+    
+</link>
+
+<joint name="arm_base_arm_lower_joint" type="revolute">
+    <parent link="arm_base"/>
+    <child link="arm_lower"/>
+    
+      <origin xyz="  0.1376   0.0000   0.0004" rpy=" -0.0000  -0.8205  -0.0000" />
+
+    <axis xyz="0 1 0"/>
+    <!-- 
+        THIS is a dirty hack must be fixed in future versions
+        what we need is a new empty type which has properties for joint types limits...
+        lower and upper could be set by constraints    
+    -->
+    <limit effort="100" velocity="1.0" lower="-3.14" upper="3.14" />
+  </joint> 
+ 
+   <transmission name="arm_base_arm_lower_trans">
+      <type>position_controllers/JointTrajectoryController</type>
+      <joint name="arm_base_arm_lower_joint">
+          <hardwareInterface>PositionJointInterface</hardwareInterface></joint>
+      <actuator name="arm_base_arm_lower_motor">
+          <hardwareInterface>PositionJointInterface</hardwareInterface>
+         <mechanicalReduction>1</mechanicalReduction>
+       </actuator>
+  </transmission>
+
+<link name="arm_lower_end">
+    <!-- visual -->
+    
+    <visual>
+        
+        <geometry>
+            <mesh filename="package://iai_sherpa_donkey/meshes/arm_lower_end_vis.dae"/>
+        </geometry>
+    </visual>
+
+    
+    <!-- collision -->
+    
+    <collision>
+        
+        <geometry>
+            <mesh filename="package://iai_sherpa_donkey/meshes/arm_lower_end_col.stl"/>
+        </geometry>
+    </collision>
+
+
+    <!-- inertial -->
+    
+        <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.5"/>
+        <inertia 
+            ixx="0.001" ixy="0.0" ixz="0.0" 
+            iyy="0.001" iyz="0.0" 
+            izz="0.001"/>
+        </inertial>
+    
+</link>
+
+<joint name="arm_lower_arm_lower_end_joint" type="revolute">
+    <parent link="arm_lower"/>
+    <child link="arm_lower_end"/>
+    
+      <origin xyz="  0.5271   0.0000  -0.0025" rpy=" -3.1416   0.0037  -0.0000" />
+
+    <axis xyz="1 0 0"/>
+    <!-- 
+        THIS is a dirty hack must be fixed in future versions
+        what we need is a new empty type which has properties for joint types limits...
+        lower and upper could be set by constraints    
+    -->
+    <limit effort="100" velocity="1.0" lower="-3.14" upper="3.14" />
+  </joint> 
+ 
+   <transmission name="arm_lower_arm_lower_end_trans">
+      <type>position_controllers/JointTrajectoryController</type>
+      <joint name="arm_lower_arm_lower_end_joint">
+          <hardwareInterface>PositionJointInterface</hardwareInterface></joint>
+      <actuator name="arm_lower_arm_lower_end_motor">
+          <hardwareInterface>PositionJointInterface</hardwareInterface>
+         <mechanicalReduction>1</mechanicalReduction>
+       </actuator>
+  </transmission>
+
+<link name="arm_upper">
+    <!-- visual -->
+    
+    <visual>
+        
+        <geometry>
+            <mesh filename="package://iai_sherpa_donkey/meshes/arm_upper_vis.dae"/>
+        </geometry>
+    </visual>
+
+    
+    <!-- collision -->
+    
+    <collision>
+        
+        <geometry>
+            <mesh filename="package://iai_sherpa_donkey/meshes/arm_upper_col.stl"/>
+        </geometry>
+    </collision>
+
+
+    <!-- inertial -->
+    
+        <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="2"/>
+        <inertia 
+            ixx="0.001" ixy="0.0" ixz="0.0" 
+            iyy="0.001" iyz="0.0" 
+            izz="0.001"/>
+        </inertial>
+    
+</link>
+
+<joint name="arm_lower_end_arm_upper_joint" type="revolute">
+    <parent link="arm_lower_end"/>
+    <child link="arm_upper"/>
+    
+      <origin xyz="  0.0824  -0.0000   0.0412" rpy=" -0.0000  -1.5348   0.0000" />
+
+    <axis xyz="0 1 0"/>
+    <!-- 
+        THIS is a dirty hack must be fixed in future versions
+        what we need is a new empty type which has properties for joint types limits...
+        lower and upper could be set by constraints    
+    -->
+    <limit effort="100" velocity="1.0" lower="-3.14" upper="3.14" />
+  </joint> 
+ 
+   <transmission name="arm_lower_end_arm_upper_trans">
+      <type>position_controllers/JointTrajectoryController</type>
+      <joint name="arm_lower_end_arm_upper_joint">
+          <hardwareInterface>PositionJointInterface</hardwareInterface></joint>
+      <actuator name="arm_lower_end_arm_upper_motor">
+          <hardwareInterface>PositionJointInterface</hardwareInterface>
+         <mechanicalReduction>1</mechanicalReduction>
+       </actuator>
+  </transmission>
+
+<link name="arm_upper_end">
+    <!-- visual -->
+    
+    <visual>
+        
+        <geometry>
+            <mesh filename="package://iai_sherpa_donkey/meshes/arm_upper_end_vis.dae"/>
+        </geometry>
+    </visual>
+
+    
+    <!-- collision -->
+    
+    <collision>
+        
+        <geometry>
+            <mesh filename="package://iai_sherpa_donkey/meshes/arm_upper_end_col.stl"/>
+        </geometry>
+    </collision>
+
+
+    <!-- inertial -->
+    
+        <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.5"/>
+        <inertia 
+            ixx="0.001" ixy="0.0" ixz="0.0" 
+            iyy="0.001" iyz="0.0" 
+            izz="0.001"/>
+        </inertial>
+    
+</link>
+
+<joint name="arm_upper_arm_upper_end_joint" type="revolute">
+    <parent link="arm_upper"/>
+    <child link="arm_upper_end"/>
+    
+      <origin xyz="  0.4170   0.0000   0.0075" rpy="  3.1416  -0.0951   0.0000" />
+
+    <axis xyz="1 0 0"/>
+    <!-- 
+        THIS is a dirty hack must be fixed in future versions
+        what we need is a new empty type which has properties for joint types limits...
+        lower and upper could be set by constraints    
+    -->
+    <limit effort="100" velocity="1.0" lower="-3.14" upper="3.14" />
+  </joint> 
+ 
+   <transmission name="arm_upper_arm_upper_end_trans">
+      <type>position_controllers/JointTrajectoryController</type>
+      <joint name="arm_upper_arm_upper_end_joint">
+          <hardwareInterface>PositionJointInterface</hardwareInterface></joint>
+      <actuator name="arm_upper_arm_upper_end_motor">
+          <hardwareInterface>PositionJointInterface</hardwareInterface>
+         <mechanicalReduction>1</mechanicalReduction>
+       </actuator>
+  </transmission>
+
+  <donkey_gripper_macro/>
+  </xacro:macro>
+  <xacro:macro name="donkey_gripper_macro">
+    <link name="gripper_base">	
+	<visual>
+	    
+	    <geometry>
+		<mesh filename="package://iai_sherpa_donkey/meshes/gripper_base_vis.dae"/>
+	    </geometry>
+	</visual>
+	
+	<collision>
+	    <geometry>
+		<mesh filename="package://iai_sherpa_donkey/meshes/gripper_base_col.stl"/>
+	    </geometry>
+	</collision>
+	    <inertial>
+	    <origin xyz="0 0 0" rpy="0 0 0" />
+	    <mass value="0.5"/>
+	    <inertia 
+		ixx="0.001" ixy="0.0" ixz="0.0" 
+		iyy="0.001" iyz="0.0" 
+		izz="0.001"/>
+	    </inertial>
+    </link>
+
+    <joint name="arm_upper_end_gripper_base_joint" type="revolute">
+	<parent link="arm_upper_end"/>
+	<child link="gripper_base"/>
+	
+	  <origin xyz="  0.0824   0.0000   0.0014" rpy=" -0.0000  -0.8131   0.0000" />
+
+	<axis xyz="0 1 0"/>
+	<!-- 
+	    THIS is a dirty hack must be fixed in future versions
+	    what we need is a new empty type which has properties for joint types limits...
+	    lower and upper could be set by constraints    
+	-->
+	<limit effort="100" velocity="1.0" lower="-3.14" upper="3.14" />
+      </joint> 
+    
+      <transmission name="arm_upper_end_gripper_base_trans">
+	  <type>position_controllers/JointTrajectoryController</type>
+	  <joint name="arm_upper_end_gripper_base_joint">
+          <hardwareInterface>PositionJointInterface</hardwareInterface></joint>
+	  <actuator name="arm_upper_end_gripper_base_motor">
+	      <hardwareInterface>PositionJointInterface</hardwareInterface>
+	    <mechanicalReduction>1</mechanicalReduction>
+	  </actuator>
+      </transmission>
+      
+      
+<link name="gripper_palm">
+    <!-- visual -->
+    
+    <visual>
+        
+        <geometry>
+            <mesh filename="package://iai_sherpa_donkey/meshes/gripper_palm_vis.dae"/>
+        </geometry>
+    </visual>
+
+    
+    <!-- collision -->
+    
+
+    <!-- inertial -->
+    
+        <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.25"/>
+        <inertia 
+            ixx="0.0002" ixy="0.0" ixz="0.0" 
+            iyy="0.0002" iyz="0.0" 
+            izz="0.0002"/>
+        </inertial>
+    
+</link>
+
+<joint name="gripper_base_gripper_palm_joint" type="revolute">
+    <parent link="gripper_base"/>
+    <child link="gripper_palm"/>
+    
+      <origin xyz="  0.1216  -0.0022  -0.0009" rpy=" -0.0000  -0.0000   0.0000" />
+
+    <axis xyz="1 0 0"/>
+    <!-- 
+        THIS is a dirty hack must be fixed in future versions
+        what we need is a new empty type which has properties for joint types limits...
+        lower and upper could be set by constraints    
+    -->
+    <limit effort="100" velocity="1.0" lower="-3.14" upper="3.14" />
+  </joint> 
+ 
+   <transmission name="gripper_base_gripper_palm_trans">
+      <type>position_controllers/JointTrajectoryController</type>
+      <joint name="gripper_base_gripper_palm_joint">
+          <hardwareInterface>PositionJointInterface</hardwareInterface></joint>
+      <actuator name="gripper_base_gripper_palm_motor">
+          <hardwareInterface>PositionJointInterface</hardwareInterface>
+         <mechanicalReduction>1</mechanicalReduction>
+       </actuator>
+  </transmission>
+  
+<link name="gripper_grasp_link"/>
+<joint name="gripper_palm_gripper_grasp_joint" type="fixed">
+    <parent link="gripper_palm"/>
+    <child link="gripper_grasp_link"/>    
+      <origin xyz="0.02 0.0 0.0" rpy="${0.5 *pi} ${0.25 *pi}  ${0.5 *pi}" />
+  </joint> 
+  
+      <donkey_cam_macro name="cam_right">
+	<origin xyz="  0.0981  -0.0794  -0.0006" rpy=" -0.0000  -0.0000   0.0000" />
+      </donkey_cam_macro>
+      <donkey_cam_macro name="cam_left">
+      <origin xyz="  0.1016   0.0759  -0.0006" rpy=" -3.1415 0.0000  0.0000" />
+      </donkey_cam_macro>
+      
+      
+      <donkey_finger_macro name="finger_bottom_left">
+      <origin xyz="  0.0054   0.0244  -0.0222" rpy=" -2.3562  -0.0000  -0.0000" />
+      </donkey_finger_macro>
+      <donkey_finger_macro name="finger_bottom_right">
+      <origin xyz="  0.0054  -0.0209  -0.0213" rpy="  2.3562   0.0000  -0.0000" />
+      </donkey_finger_macro>
+      <donkey_finger_macro name="finger_top_left">
+      <origin xyz="  0.0054   0.0253   0.0231" rpy=" -0.7854  -0.0000  -0.0000" />
+      </donkey_finger_macro>
+      <donkey_finger_macro name="finger_top_right">
+      <origin xyz="  0.0054  -0.0200   0.0240" rpy="  0.7854   0.0000  -0.0000" />
+      </donkey_finger_macro>
+  </xacro:macro>
+  <xacro:macro name="donkey_cam_macro" params="name *origin">
+	  
+      <link name="${name}">
+	  <!-- visual -->
+	  
+	  <visual>
+	      
+	      <geometry>
+		  <mesh filename="package://iai_sherpa_donkey/meshes/cam_vis.dae"/>
+	      </geometry>
+	  </visual>
+
+	  
+	  <!-- collision -->
+	  
+
+	  <!-- inertial -->
+	  
+	      <inertial>
+	      <origin xyz="0 0 0" rpy="0 0 0" />
+	      <mass value="0.01"/>
+	      <inertia 
+		  ixx="0.000001" ixy="0.0" ixz="0.0" 
+		  iyy="0.000001" iyz="0.0" 
+		  izz="0.000001"/>
+	      </inertial>
+	  
+      </link>
+
+      <joint name="gripper_base_${name}_joint" type="revolute">
+	  <parent link="gripper_base"/>
+	  <child link="${name}"/>
+        <xacro:insert_block name="origin" />
+	  <axis xyz="1 0 0"/>
+	  <limit effort="0" velocity="0" lower="0" upper="0" />
+
+	</joint> 
+      
+	<transmission name="gripper_base_${name}_trans">
+	    <type>position_controllers/JointTrajectoryController</type>
+	    <joint name="gripper_base_${name}_joint">
+          <hardwareInterface>EffortJointInterface</hardwareInterface></joint>
+	    <actuator name="gripper_base_${name}_motor">
+		<hardwareInterface>EffortJointInterface</hardwareInterface>
+	      <mechanicalReduction>1</mechanicalReduction>
+	    </actuator>
+	</transmission>
+    
+  </xacro:macro>
+  <xacro:macro name="donkey_finger_macro" params="name *origin">
+    
+<link name="${name}">
+    <!-- visual -->
+    
+    <visual>
+        
+        <geometry>
+            <mesh filename="package://iai_sherpa_donkey/meshes/finger_vis.dae"/>
+        </geometry>
+    </visual>
+
+    <collision>
+        
+        <geometry>
+            <mesh filename="package://iai_sherpa_donkey/meshes/finger_vis.dae"/>
+        </geometry>
+    </collision>
+    
+    <!-- collision -->
+    
+
+    <!-- inertial -->
+    
+        <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.01"/>
+        <inertia 
+            ixx="0.000001" ixy="0.0" ixz="0.0" 
+            iyy="0.000001" iyz="0.0" 
+            izz="0.000001"/>
+        </inertial>
+    
+</link>
+
+<joint name="gripper_palm_${name}_joint" type="revolute">
+    <parent link="gripper_palm"/>
+    <child link="${name}"/>
+    <xacro:insert_block name="origin" />
+
+    <axis xyz="0 1 0"/>
+    <!-- 
+        THIS is a dirty hack must be fixed in future versions
+        what we need is a new empty type which has properties for joint types limits...
+        lower and upper could be set by constraints    
+    -->
+    <limit effort="100" velocity="1.0" lower="-1.4" upper="0.4"/>
+  </joint> 
+ 
+   <transmission name="gripper_palm_${name}_trans">
+      <type>position_controllers/JointTrajectoryController</type>
+      <joint name="gripper_palm_${name}_joint">
+          <hardwareInterface>PositionJointInterface</hardwareInterface></joint>
+      <actuator name="gripper_palm_${name}_motor">
+          <hardwareInterface>PositionJointInterface</hardwareInterface>
+         <mechanicalReduction>1</mechanicalReduction>
+       </actuator>
+  </transmission>
+    
+  
+  
+  </xacro:macro>
+  
+  
+</robot>
+  
