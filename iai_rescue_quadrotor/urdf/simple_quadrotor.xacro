@@ -131,7 +131,7 @@
     </sensor>
   </gazebo>
   <gazebo>
-    <plugin name="object_controller" filename="libgazebo_ros_floating_move.so">
+    <plugin name="object_controller" filename="libiai_floating_move.so">
       <commandTopic>cmd_vel</commandTopic>
       <odometryTopic>world</odometryTopic>
       <odometryFrame>world</odometryFrame>
