@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<launch>
+   <arg name="name" default="operator"/>
+   <arg name="tf_prefix" default="$(optenv ROS_NAMESPACE)"/>
+   <arg name="x" default="0.0"/>
+   <arg name="y" default="0.0"/>
+   <arg name="z" default="0.1"/>
+   <!--
+   <arg name="model" default="$(find iai_rescue_quadrotor)/urdf/iai_quadrotor.gazebo.urdf.xacro"/>
+   -R $(arg R) 
+    -P $(arg P) 
+    -Y $(arg Y) 
+    
+   -->  
+  <arg name="model" default="$(find iai_rescue_human_operator)/urdf/operator.xacro"/>
+   
+  <arg name="joy_dev" default="/dev/input/js2" />
+ <node name="spawn_operator" pkg="gazebo_ros" type="spawn_model" args="
+    -param robot_description 
+    -urdf 
+    -x $(arg x) 
+    -y $(arg y) 
+    -z $(arg z) 
+    -model $(arg name) 
+    -robot_namespace $(arg tf_prefix)
+       "/>
+   
+   
+  <node name="joy" pkg="joy" type="joy_node" output="screen" >
+    <param name="dev" value="$(arg joy_dev)" />
+  </node>
+</launch>

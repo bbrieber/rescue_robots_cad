@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+
+<robot name="iai_operator" xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:property name="pi" value="3.1415939331054688" />
+   
+  <xacro:macro name="iai_operator_macro" >
+    <!--
+    <link name="base_footprint">
+    </link>
+    -->
+
+    <link name="base_link">
+      <inertial>
+        <mass value="1" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
+      </inertial>
+        <!--MAIN_BODY-->
+        <visual>
+	  <origin xyz="0 0 0" rpy="0 0 0" />
+	  <geometry>
+	    <mesh filename="package://iai_rescue_human_operator/meshes/operator_capsule.stl"/>
+	  </geometry>
+	  </visual>
+        <collision>
+	  <origin xyz="0 0 0" rpy="0 0 0" />
+	  <geometry>
+	    <mesh filename="package://iai_rescue_human_operator/meshes/operator_capsule.stl"/>
+	  </geometry>
+        </collision>
+    </link>
+    <gazebo>
+      <plugin filename="libiai_operator_controller.so" name="SherpaOperatorCtr">
+	<commandTopic>cmd_vel</commandTopic>
+	<odometryTopic>world</odometryTopic>
+	<odometryFrame>world</odometryFrame>
+	<odometryRate>40.0</odometryRate>
+	<robotBaseFrame>base_link</robotBaseFrame>
+    </plugin>
+  </gazebo>
+  
+  </xacro:macro>
+    <iai_operator_macro/>
+</robot>
+
