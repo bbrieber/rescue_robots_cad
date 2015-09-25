@@ -3,6 +3,7 @@
 <robot name="iai_wasp" xmlns:xacro="http://ros.org/wiki/xacro">
 
     <xacro:property name="pi" value="3.1415939331054688" />
+    <xacro:include filename="$(find hector_sensors_description)/urdf/generic_camera.urdf.xacro" />
    
   <xacro:macro name="iai_wasp_macro" >
     <!--
@@ -31,17 +32,16 @@
         </collision>
     </link>
     <iai_wasp_scanner_macro/>
-    <!--
     <iai_wasp_camera_macro/>
+    <!--
     -->
   </xacro:macro>
     <!-- CAMERA -->
     
   <xacro:macro name="iai_wasp_camera_macro" >
-    <xacro:include filename="$(find hector_sensors_description)/urdf/generic_camera.urdf.xacro" />
-    <xacro:generic_camera name="front_cam" parent="base_link" ros_topic="camera/image" cam_info_topic="camera/camera_info" update_rate="30" res_x="320" res_y="240" image_format="R8G8B8" hfov="90">
+    <generic_camera name="front_cam" parent="base_link" ros_topic="camera/image" cam_info_topic="camera/camera_info" update_rate="30" res_x="320" res_y="240" image_format="R8G8B8" hfov="90">
       <origin xyz="0.17333 0.0 -0.011" rpy="0 0 0"/>
-    </xacro:generic_camera>
+    </generic_camera>
 <!--  
   <xacro:include filename="$(find hector_quadrotor_gazebo)/urdf/quadrotor_plugins.gazebo.xacro" />
   -->
